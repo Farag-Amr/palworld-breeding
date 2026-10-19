@@ -1,69 +1,60 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex flex-1 flex-col bg-zinc-950 text-zinc-100">
+      <header className="border-b border-zinc-800">
+        <div className="mx-auto flex w-full max-w-3xl items-baseline justify-between px-6 py-4">
+          <p className="text-sm font-medium tracking-wide text-amber-300">
+            Palworld Breeding
           </p>
+          <p className="text-xs text-zinc-500">Unofficial fan project</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-10 px-6 py-12">
+        <section className="flex flex-col gap-3">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-amber-300/80">
+            In progress
+          </p>
+          <h1 className="text-3xl font-semibold tracking-tight text-zinc-50 sm:text-4xl">
+            Breed with a plan, not a spreadsheet.
+          </h1>
+          <p className="max-w-xl text-base leading-7 text-zinc-400">
+            Pick two parents and see the child. Open any Pal and see every pair
+            that produces it. Calculations run in your browser from static Pal
+            data — no account, no database.
+          </p>
+        </section>
+
+        <section className="grid gap-4 sm:grid-cols-2">
+          <article className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-5">
+            <h2 className="text-sm font-semibold text-amber-200">
+              Two-parent calculator
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              Choose Pal A and Pal B. The site applies unique recipes first,
+              then the breeding-power midpoint formula.
+            </p>
+            <p className="mt-4 text-xs text-zinc-500">Coming next</p>
+          </article>
+          <article className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-5">
+            <h2 className="text-sm font-semibold text-amber-200">
+              Paldex parent list
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              A numbered list of Pals. Click one to expand every parent
+              combination that hatches that child.
+            </p>
+            <p className="mt-4 text-xs text-zinc-500">Coming next</p>
+          </article>
+        </section>
       </main>
+
+      <footer className="border-t border-zinc-800">
+        <p className="mx-auto max-w-3xl px-6 py-6 text-xs leading-5 text-zinc-500">
+          Palworld is a trademark of Pocketpair, Inc. This site is unofficial
+          and not endorsed by Pocketpair.
+        </p>
+      </footer>
     </div>
   );
 }

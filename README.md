@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Palworld Breeding Calculator
 
-## Getting Started
+Unofficial fan site for planning Palworld breeding: pick two parents to see the child, and browse every Pal with the parent pairs that produce it.
 
-First, run the development server:
+This repo is a **usable tool** and a **learning project**. It uses a 2026 frontend stack that is common on resumes: Next.js App Router, TypeScript, Tailwind CSS, and static JSON instead of a database.
+
+Palworld and Pal names/art belong to Pocketpair, Inc. This is not affiliated with them.
+
+## Why this architecture
+
+Palworld has roughly 300 Pals. The browser can compute a pair result (and even scan all pairs) in milliseconds. A server database would add hosting cost and complexity without helping v1.
+
+| Layer | Role |
+| --- | --- |
+| `public/data` | Facts: Pal list, unique combos, reverse parent index |
+| `src/lib` | Rules: breeding formula as testable TypeScript |
+| `src/components` | Screens: pickers, results, expandable Paldex list |
+| `src/app` | Routes: which URL shows which screen |
+
+## Stack
+
+- **Next.js** (App Router) — pages, local dev server, production build
+- **TypeScript** — typed Pal records and function arguments
+- **Tailwind CSS** — layout and theme in the markup
+- **Static JSON** — Paldex data shipped with the site
+- **GitHub** — source history and portfolio
+
+## Local development
+
+Requires [Node.js 20.9+](https://nodejs.org/).
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Dev server with hot reload |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Roadmap
 
-## Learn More
+- [x] Next.js scaffold and GitHub repo
+- [ ] Pal JSON data and unique-combo table
+- [ ] Breeding engine (`getChild`, parent reverse lookup)
+- [ ] Two-parent calculator
+- [ ] Numbered Paldex with expandable parent combinations
+- [ ] Later: breeding matrix and shortest path
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Source code in this repository is available for learning. Game data and Pal imagery remain subject to Pocketpair’s rights and to licenses of any community datasets we import (credited when added).
