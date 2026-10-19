@@ -26,7 +26,7 @@ export default function Home() {
           </p>
           <p className="text-sm text-zinc-500">
             Loaded {dataMeta.palCount} pals and {dataMeta.uniqueComboCount} unique
-            recipes ({dataMeta.palcalcVersion}).
+            recipes (Palworld {dataMeta.gameVersion}).
           </p>
         </section>
 

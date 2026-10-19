@@ -77,6 +77,7 @@ for (const pal of pals) {
 const meta = {
   palCount: pals.length,
   uniqueComboCount: uniqueCombos.length,
+  gameVersion: "1.0",
   palcalcVersion: db.Version,
   source: "PalCalc db.json (MIT) + unique combo table from palworldcalc.com/data/special.json",
 };

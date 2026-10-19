@@ -23,6 +23,7 @@ export type UniqueCombo = {
 export type DataMeta = {
   palCount: number;
   uniqueComboCount: number;
+  gameVersion: string;
   palcalcVersion: string;
   source: string;
 };
