@@ -1,4 +1,5 @@
-import { dataMeta } from "@/lib/pals";
+import { PaldexList } from "@/components/PaldexList";
+import { dataMeta, pals } from "@/lib/pals";
 
 export default function Home() {
   return (
@@ -51,6 +52,8 @@ export default function Home() {
             <p className="mt-4 text-xs text-zinc-500">Coming next</p>
           </article>
         </section>
+
+        <PaldexList pals={pals} />
       </main>
 
       <footer className="border-t border-zinc-800">
