@@ -12,7 +12,7 @@ Palworld has roughly 300 Pals. The browser can calculate a pair result (and even
 
 | Layer | Role |
 | --- | --- |
-| `public/data` | Facts: Pal list, unique combos, reverse parent index |
+| `src/data` | Facts: Pal list and unique combos (generated JSON) |
 | `src/lib` | Rules: breeding formula as testable TypeScript |
 | `src/components` | Screens: pickers, results, expandable Paldex list |
 | `src/app` | Routes: which URL shows which screen |
@@ -41,11 +41,14 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run dev` | Dev server with hot reload |
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
+| `npm run build-data` | Rebuild `src/data` JSON from files in `vendor/` |
+
+See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for PalCalc (MIT) and combo-table credit.
 
 ## Roadmap
 
 - [x] Next.js scaffold and GitHub repo
-- [ ] Pal JSON data and unique-combo table
+- [x] Pal JSON data and unique-combo table
 - [ ] Breeding engine (`getChild`, parent reverse lookup)
 - [ ] Two-parent calculator
 - [ ] Numbered Paldex with expandable parent combinations

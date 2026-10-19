@@ -1,0 +1,6 @@
+{
+  "palCount": 299,
+  "uniqueComboCount": 136,
+  "palcalcVersion": "v28",
+  "source": "PalCalc db.json (MIT) + unique combo table from palworldcalc.com/data/special.json"
+}

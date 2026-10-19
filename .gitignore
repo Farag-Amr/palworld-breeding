@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# downloaded source datasets (regenerate with npm run build-data)
+/vendor
+
+# local inspect scripts
+/tmp-*

@@ -1,3 +1,5 @@
+import { dataMeta } from "@/lib/pals";
+
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col bg-zinc-950 text-zinc-100">
@@ -21,6 +23,10 @@ export default function Home() {
           <p className="max-w-xl text-base leading-7 text-zinc-400">
             Pick two parents to see the child, or click a Pal to see which
             pairs make it. Runs in your browser. No account.
+          </p>
+          <p className="text-sm text-zinc-500">
+            Loaded {dataMeta.palCount} pals and {dataMeta.uniqueComboCount} unique
+            recipes ({dataMeta.palcalcVersion}).
           </p>
         </section>
 
