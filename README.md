@@ -1,14 +1,14 @@
 # Palworld Breeding Calculator
 
-Unofficial fan site for planning Palworld breeding: pick two parents to see the child, and browse every Pal with the parent pairs that produce it.
+Unofficial fan site for planning Palworld breeding: pick two parents to see the child, browse every Pal with the parent pairs that produce it and more.
 
-This repo is a **usable tool** and a **learning project**. It uses a 2026 frontend stack that is common on resumes: Next.js App Router, TypeScript, Tailwind CSS, and static JSON instead of a database.
+This repo is a **usable tool** and a **learning project**. It uses a 2026 frontend stack. Next.js App Router, TypeScript, Tailwind CSS, and static JSON instead of a database.
 
 Palworld and Pal names/art belong to Pocketpair, Inc. This is not affiliated with them.
 
 ## Why this architecture
 
-Palworld has roughly 300 Pals. The browser can compute a pair result (and even scan all pairs) in milliseconds. A server database would add hosting cost and complexity without helping v1.
+Palworld has roughly 300 Pals. The browser can calculate a pair result (and even scan all pairs) in milliseconds. A server database would add hosting cost and currently uneeded complexity without helping v1 of this project.
 
 | Layer | Role |
 | --- | --- |
