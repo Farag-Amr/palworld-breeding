@@ -1,4 +1,5 @@
 export type PalId = string;
+export type PalGender = "male" | "female";
 
 export type Pal = {
   id: PalId;
@@ -16,8 +17,8 @@ export type UniqueCombo = {
   parent1Id: PalId;
   parent2Id: PalId;
   childId: PalId;
-  parent1Gender: "male" | "female" | null;
-  parent2Gender: "male" | "female" | null;
+  parent1Gender: PalGender | null;
+  parent2Gender: PalGender | null;
 };
 
 export type DataMeta = {

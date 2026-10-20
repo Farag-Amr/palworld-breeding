@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "build-data": "node scripts/build-data.mjs",
-    "fetch-pal-icons": "node scripts/fetch-pal-icons.mjs"
+    "fetch-pal-icons": "node scripts/fetch-pal-icons.mjs",
+    "verify-breed": "npx --yes tsx --tsconfig tsconfig.json scripts/verify-breed.ts"
   },
   "dependencies": {
     "next": "16.4.2",
