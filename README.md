@@ -42,8 +42,9 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
 | `npm run build-data` | Rebuild `src/data` JSON from files in `vendor/` |
+| `npm run fetch-pal-icons` | Copy pal portraits from `vendor/palarium/assets/pals` into `public/pals` |
 
-See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for PalCalc (MIT) and combo-table credit.
+See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for PalCalc (MIT), combo-table credit, and pal portrait source.
 
 ## Roadmap
 
@@ -51,7 +52,8 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for PalCalc (MIT) and combo
 - [x] Pal JSON data and unique-combo table
 - [ ] Breeding engine (`getChild`, parent reverse lookup)
 - [ ] Two-parent calculator
-- [ ] Numbered Paldex with expandable parent combinations
+- [x] Numbered Paldex list with pal portraits
+- [ ] Paldex expandable parent combinations
 - [ ] Later: breeding matrix and shortest path
 
 ## License

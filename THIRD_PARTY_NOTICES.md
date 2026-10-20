@@ -17,3 +17,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 ## Unique combo table
 
 Fixed parent recipes are imported from the public `special.json` published at palworldcalc.com, which that project traces to the game’s unique-combo table (`DT_PalCombiUnique`).
+
+## Pal portraits
+
+In-game pal portraits shown on this site are Pocketpair, Inc. artwork. Copies used here were extracted by the [palarium](https://github.com/djg2111/palarium) fan project (`assets/pals/T_{InternalName}_icon_normal.webp`) from Palworld 1.0 textures. Gumoss (Special Flower) reuses the default Gumoss portrait because palarium does not ship a separate `PlantSlime_Flower` icon.

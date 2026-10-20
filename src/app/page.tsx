@@ -58,8 +58,9 @@ export default function Home() {
 
       <footer className="border-t border-zinc-800">
         <p className="mx-auto max-w-3xl px-6 py-6 text-xs leading-5 text-zinc-500">
-          Palworld is a trademark of Pocketpair, Inc. This site is unofficial
-          and not endorsed by Pocketpair.
+          Palworld and Pal artwork are trademarks and copyright of Pocketpair,
+          Inc. This site is an unofficial fan project and is not endorsed by
+          Pocketpair.
         </p>
       </footer>
     </div>
