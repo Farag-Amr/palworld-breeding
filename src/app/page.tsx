@@ -1,4 +1,4 @@
-import { PaldexList } from "@/components/PaldexList";
+import { BreedingWorkbench } from "@/components/BreedingWorkbench";
 import { dataMeta, pals } from "@/lib/pals";
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
           </h1>
           <p className="max-w-xl text-base leading-7 text-zinc-400">
             Pick two parents to see the child, or click a Pal to see which
-            pairs make it. Runs in your browser. No account.
+            pairs make it. Runs in your browser. No account needed.
           </p>
           <p className="text-sm text-zinc-500">
             Loaded {dataMeta.palCount} pals and {dataMeta.uniqueComboCount} unique
@@ -31,29 +31,7 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="grid gap-4 sm:grid-cols-2">
-          <article className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-5">
-            <h2 className="text-sm font-semibold text-sky-200">
-              Two-parent calculator
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-zinc-400">
-              Choose two Pals. You get the child they would produce.
-            </p>
-            <p className="mt-4 text-xs text-zinc-500">Coming next</p>
-          </article>
-          <article className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-5">
-            <h2 className="text-sm font-semibold text-sky-200">
-              Paldex parent list
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-zinc-400">
-              Numbered list of Pals. Click one to see every parent pair that
-              makes that child.
-            </p>
-            <p className="mt-4 text-xs text-zinc-500">Coming next</p>
-          </article>
-        </section>
-
-        <PaldexList pals={pals} />
+        <BreedingWorkbench pals={pals} />
       </main>
 
       <footer className="border-t border-zinc-800">
