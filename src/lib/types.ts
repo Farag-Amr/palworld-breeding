@@ -28,6 +28,10 @@ export type ParentPair = {
   parent2Gender: PalGender | null;
 };
 
+export type ParentCombination = ParentPair & {
+  child: Pal;
+};
+
 export type DataMeta = {
   palCount: number;
   uniqueComboCount: number;

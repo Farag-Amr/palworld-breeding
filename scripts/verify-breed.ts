@@ -1,6 +1,7 @@
 import {
   areOppositeGenders,
   getChild,
+  getParentCombinations,
   getParentPairs,
   oppositeGender,
 } from "../src/lib/breed";
@@ -270,6 +271,94 @@ if (
   fail("Katress Ignis: missing Katress female × Wixen male");
 }
 
+let combinationCount = 0;
+for (const parent of pals) {
+  const combinations = getParentCombinations(parent);
+  combinationCount += combinations.length;
+
+  const sameSpecies = combinations.find(
+    (combo) =>
+      combo.parent1.id === parent.id &&
+      combo.parent2.id === parent.id &&
+      combo.child.id === parent.id,
+  );
+  if (!sameSpecies) {
+    fail(`${parent.name}: missing same-species combination`);
+  }
+
+  for (const combo of combinations) {
+    if (combo.parent1.id !== parent.id) {
+      fail(
+        `${parent.name}: combination does not keep selected parent on the left (${combo.parent1.name} × ${combo.parent2.name})`,
+      );
+    }
+    if (combo.parent1Gender == null && combo.parent2Gender == null) {
+      expectChild(
+        `combo ${parent.name}`,
+        combo.parent1,
+        combo.parent2,
+        "male",
+        "female",
+        combo.child.id,
+      );
+      expectChild(
+        `combo swapped genders ${parent.name}`,
+        combo.parent1,
+        combo.parent2,
+        "female",
+        "male",
+        combo.child.id,
+      );
+    } else if (combo.parent1Gender && combo.parent2Gender) {
+      expectChild(
+        `combo gender-locked ${parent.name}`,
+        combo.parent1,
+        combo.parent2,
+        combo.parent1Gender,
+        combo.parent2Gender,
+        combo.child.id,
+      );
+    } else {
+      fail(
+        `${parent.name}: combination ${combo.parent1.name} × ${combo.parent2.name} has incomplete genders`,
+      );
+    }
+  }
+}
+
+const lamballCombos = getParentCombinations(pal("1.0"));
+if (
+  !lamballCombos.some(
+    (combo) =>
+      combo.parent2.id === "2.0" && combo.child.id === "22.0",
+  )
+) {
+  fail("Lamball combinations: missing Cattiva → Daedream");
+}
+
+const fuackCombos = getParentCombinations(pal("5.0"));
+if (
+  !fuackCombos.some(
+    (combo) =>
+      combo.parent2.id === "25.0" && combo.child.id === "5.1",
+  )
+) {
+  fail("Fuack combinations: missing Flambelle → Fuack Ignis");
+}
+
+const wixenCombos = getParentCombinations(pal("78.0"));
+if (
+  !wixenCombos.some(
+    (combo) =>
+      combo.parent2.id === "79.0" &&
+      combo.parent1Gender === "female" &&
+      combo.parent2Gender === "male" &&
+      combo.child.id === "78.1",
+  )
+) {
+  fail("Wixen combinations: missing Katress M → Wixen Noct");
+}
+
 if (failures.length > 0) {
   console.error(`Failed ${failures.length} check(s):`);
   for (const failure of failures.slice(0, 40)) console.error(`- ${failure}`);
@@ -277,5 +366,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Passed: ${uniqueHits} unique recipes (forward + swapped), ${uniqueBeatsGeneric} of those differ from the breeding-power average, ${reversePairCount} reverse parent pairs, plus same-species, generic, gender-lock, and same-gender checks.`,
+  `Passed: ${uniqueHits} unique recipes (forward + swapped), ${uniqueBeatsGeneric} of those differ from the breeding-power average, ${reversePairCount} reverse parent pairs, ${combinationCount} parent combinations, plus same-species, generic, gender-lock, and same-gender checks.`,
 );

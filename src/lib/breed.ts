@@ -1,5 +1,11 @@
 import { pals, palsById, uniqueCombos } from "@/lib/pals";
-import type { Pal, PalGender, ParentPair, UniqueCombo } from "@/lib/types";
+import type {
+  Pal,
+  PalGender,
+  ParentCombination,
+  ParentPair,
+  UniqueCombo,
+} from "@/lib/types";
 
 const genericPool = pals.filter((pal) => pal.inGenericPool);
 
@@ -82,19 +88,38 @@ export function getChild(
 }
 
 let parentPairsByChildId: Map<string, ParentPair[]> | null = null;
+let combinationsByParentId: Map<string, ParentCombination[]> | null = null;
 
-function addPair(
-  pairsByChildId: Map<string, ParentPair[]>,
-  childId: string,
-  pair: ParentPair,
-) {
-  const pairs = pairsByChildId.get(childId);
-  if (pairs) pairs.push(pair);
-  else pairsByChildId.set(childId, [pair]);
+function pushToMap<T>(map: Map<string, T[]>, key: string, value: T) {
+  const list = map.get(key);
+  if (list) list.push(value);
+  else map.set(key, [value]);
 }
 
-function buildParentPairsByChildId() {
+function addIndexedPair(
+  pairsByChildId: Map<string, ParentPair[]>,
+  combosByParentId: Map<string, ParentCombination[]>,
+  child: Pal,
+  pair: ParentPair,
+) {
+  pushToMap(pairsByChildId, child.id, pair);
+
+  const combination: ParentCombination = { ...pair, child };
+  pushToMap(combosByParentId, pair.parent1.id, combination);
+  if (pair.parent2.id !== pair.parent1.id) {
+    pushToMap(combosByParentId, pair.parent2.id, {
+      parent1: pair.parent2,
+      parent2: pair.parent1,
+      parent1Gender: pair.parent2Gender,
+      parent2Gender: pair.parent1Gender,
+      child,
+    });
+  }
+}
+
+function buildBreedingIndexes() {
   const pairsByChildId = new Map<string, ParentPair[]>();
+  const combosByParentId = new Map<string, ParentCombination[]>();
 
   for (let i = 0; i < pals.length; i++) {
     for (let j = i; j < pals.length; j++) {
@@ -104,7 +129,7 @@ function buildParentPairsByChildId() {
       const femaleMale = getChild(parent1, parent2, "female", "male");
 
       if (maleFemale && femaleMale && maleFemale.id === femaleMale.id) {
-        addPair(pairsByChildId, maleFemale.id, {
+        addIndexedPair(pairsByChildId, combosByParentId, maleFemale, {
           parent1,
           parent2,
           parent1Gender: null,
@@ -114,7 +139,7 @@ function buildParentPairsByChildId() {
       }
 
       if (maleFemale) {
-        addPair(pairsByChildId, maleFemale.id, {
+        addIndexedPair(pairsByChildId, combosByParentId, maleFemale, {
           parent1,
           parent2,
           parent1Gender: "male",
@@ -123,7 +148,7 @@ function buildParentPairsByChildId() {
       }
 
       if (femaleMale) {
-        addPair(pairsByChildId, femaleMale.id, {
+        addIndexedPair(pairsByChildId, combosByParentId, femaleMale, {
           parent1,
           parent2,
           parent1Gender: "female",
@@ -133,12 +158,22 @@ function buildParentPairsByChildId() {
     }
   }
 
-  return pairsByChildId;
+  parentPairsByChildId = pairsByChildId;
+  combinationsByParentId = combosByParentId;
+}
+
+function ensureBreedingIndexes() {
+  if (!parentPairsByChildId || !combinationsByParentId) {
+    buildBreedingIndexes();
+  }
 }
 
 export function getParentPairs(child: Pal): ParentPair[] {
-  if (!parentPairsByChildId) {
-    parentPairsByChildId = buildParentPairsByChildId();
-  }
-  return parentPairsByChildId.get(child.id) ?? [];
+  ensureBreedingIndexes();
+  return parentPairsByChildId?.get(child.id) ?? [];
+}
+
+export function getParentCombinations(parent: Pal): ParentCombination[] {
+  ensureBreedingIndexes();
+  return combinationsByParentId?.get(parent.id) ?? [];
 }

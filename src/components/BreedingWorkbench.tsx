@@ -4,7 +4,12 @@ import { PalPickerModal } from "@/components/PalPickerModal";
 import { PalSlot } from "@/components/PalSlot";
 import { PaldexList } from "@/components/PaldexList";
 import { ParentPairList } from "@/components/ParentPairList";
-import { areOppositeGenders, getChild, getParentPairs } from "@/lib/breed";
+import {
+  areOppositeGenders,
+  getChild,
+  getParentCombinations,
+  getParentPairs,
+} from "@/lib/breed";
 import type { Pal, PalGender } from "@/lib/types";
 import { useMemo, useState } from "react";
 
@@ -15,7 +20,10 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
   const [gender2, setGender2] = useState<PalGender>("female");
   const [activeSlot, setActiveSlot] = useState<1 | 2>(1);
   const [desiredChild, setDesiredChild] = useState<Pal | null>(null);
-  const [pickerOpen, setPickerOpen] = useState(false);
+  const [comboParent, setComboParent] = useState<Pal | null>(null);
+  const [pickerFor, setPickerFor] = useState<"desiredChild" | "comboParent" | null>(
+    null,
+  );
 
   const oppositeGenders = areOppositeGenders(gender1, gender2);
   const child =
@@ -25,6 +33,10 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
   const parentPairs = useMemo(
     () => (desiredChild ? getParentPairs(desiredChild) : []),
     [desiredChild],
+  );
+  const parentCombinations = useMemo(
+    () => (comboParent ? getParentCombinations(comboParent) : []),
+    [comboParent],
   );
 
   function pickPal(pal: Pal) {
@@ -113,24 +125,56 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
             pal={desiredChild}
             emptyHint=""
             interactive
-            active={pickerOpen}
+            active={pickerFor === "desiredChild"}
             showPlusWhenEmpty
-            onSelect={() => setPickerOpen(true)}
+            onSelect={() => setPickerFor("desiredChild")}
             onClear={() => setDesiredChild(null)}
           />
         </div>
         {desiredChild ? <ParentPairList pairs={parentPairs} /> : null}
       </section>
 
-      {pickerOpen ? (
+      <section className="flex flex-col gap-3">
+        <div>
+          <h2 className="text-sm font-semibold text-sky-200">
+            Parent combinations
+          </h2>
+          <p className="mt-1 text-sm text-zinc-500">
+            Select a parent and find every breeding combination it is involved
+            in.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_minmax(0,1fr)]">
+          <PalSlot
+            label="Parent"
+            pal={comboParent}
+            emptyHint=""
+            interactive
+            active={pickerFor === "comboParent"}
+            showPlusWhenEmpty
+            onSelect={() => setPickerFor("comboParent")}
+            onClear={() => setComboParent(null)}
+          />
+        </div>
+        {comboParent ? (
+          <ParentPairList pairs={parentCombinations} showChild />
+        ) : null}
+      </section>
+
+      {pickerFor ? (
         <PalPickerModal
           pals={pals}
-          selectedId={desiredChild?.id ?? null}
+          selectedId={
+            pickerFor === "desiredChild"
+              ? (desiredChild?.id ?? null)
+              : (comboParent?.id ?? null)
+          }
           onPick={(pal) => {
-            setDesiredChild(pal);
-            setPickerOpen(false);
+            if (pickerFor === "desiredChild") setDesiredChild(pal);
+            else setComboParent(pal);
+            setPickerFor(null);
           }}
-          onClose={() => setPickerOpen(false)}
+          onClose={() => setPickerFor(null)}
         />
       ) : null}
     </div>

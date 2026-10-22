@@ -1,6 +1,6 @@
 import { PalIcon } from "@/components/PalIcon";
 import { paldexLabel } from "@/lib/format";
-import type { Pal, PalGender, ParentPair } from "@/lib/types";
+import type { Pal, PalGender, ParentCombination, ParentPair } from "@/lib/types";
 
 function genderMark(gender: PalGender | null) {
   if (gender === "male") return "M";
@@ -30,18 +30,23 @@ function PairPal({ pal, gender }: { pal: Pal; gender: PalGender | null }) {
   );
 }
 
-export function ParentPairList({ pairs }: { pairs: ParentPair[] }) {
+export function ParentPairList({
+  pairs,
+  showChild = false,
+}: {
+  pairs: ParentPair[] | ParentCombination[];
+  showChild?: boolean;
+}) {
+  const noun = showChild ? "breeding combination" : "parent combination";
   return (
     <div className="flex flex-col gap-2">
       <p className="text-sm text-zinc-500">
-        {pairs.length === 1
-          ? "1 parent combination"
-          : `${pairs.length} parent combinations`}
+        {pairs.length === 1 ? `1 ${noun}` : `${pairs.length} ${noun}s`}
       </p>
       <ul className="max-h-[28rem] overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-900/60">
         {pairs.map((pair) => (
           <li
-            key={`${pair.parent1.id}:${pair.parent1Gender ?? ""}:${pair.parent2.id}:${pair.parent2Gender ?? ""}`}
+            key={`${pair.parent1.id}:${pair.parent1Gender ?? ""}:${pair.parent2.id}:${pair.parent2Gender ?? ""}:${"child" in pair ? pair.child.id : ""}`}
             className="flex items-center gap-3 border-b border-zinc-800 px-3 py-2 last:border-b-0"
           >
             <PairPal pal={pair.parent1} gender={pair.parent1Gender} />
@@ -49,6 +54,14 @@ export function ParentPairList({ pairs }: { pairs: ParentPair[] }) {
               ×
             </span>
             <PairPal pal={pair.parent2} gender={pair.parent2Gender} />
+            {showChild && "child" in pair ? (
+              <>
+                <span className="shrink-0 text-zinc-500" aria-hidden>
+                  =
+                </span>
+                <PairPal pal={pair.child} gender={null} />
+              </>
+            ) : null}
           </li>
         ))}
       </ul>
