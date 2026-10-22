@@ -67,7 +67,10 @@ export function PalSlot({
     <div className={className}>
       <button
         type="button"
-        className="w-full rounded-xl p-4 pb-10 text-left hover:bg-zinc-800/40"
+        className={[
+          "w-full rounded-xl p-4 text-left hover:bg-zinc-800/40",
+          onGenderChange ? "pb-10" : "",
+        ].join(" ")}
         onClick={onSelect}
       >
         {content}

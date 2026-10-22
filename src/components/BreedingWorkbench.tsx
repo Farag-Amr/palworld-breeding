@@ -91,6 +91,25 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
         parent2Id={parent2?.id ?? null}
         onPick={pickPal}
       />
+
+      <section className="flex flex-col gap-3">
+        <div>
+          <h2 className="text-sm font-semibold text-sky-200">Parent finder</h2>
+          <p className="mt-1 text-sm text-zinc-500">
+            Select desired pal and find all parent combinations that produce it.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_minmax(0,1fr)]">
+          <PalSlot
+            label="Desired child"
+            pal={null}
+            emptyHint=""
+            interactive
+            showPlusWhenEmpty
+            onSelect={() => {}}
+          />
+        </div>
+      </section>
     </div>
   );
 }
