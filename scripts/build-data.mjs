@@ -118,9 +118,11 @@ const selfOnlyChildIds = new Set([
   "10002.0", // Green Slime
   "10009.0", // Cave Bat
 ]);
+const unbreedableIds = new Set(["204.0"]);
 for (const pal of pals) {
   pal.inGenericPool =
     !uniqueChildIds.has(pal.id) && !selfOnlyChildIds.has(pal.id);
+  pal.breedable = !unbreedableIds.has(pal.id);
 }
 
 const meta = {

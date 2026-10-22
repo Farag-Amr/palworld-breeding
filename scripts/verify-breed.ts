@@ -82,8 +82,32 @@ if (pals.length !== 300) {
 }
 
 const astralym = pal("204.0");
-if (astralym.name !== "Astralym" || astralym.inGenericPool) {
-  fail("Astralym (#204) should exist and stay out of the generic breeding pool");
+if (astralym.name !== "Astralym" || astralym.inGenericPool || astralym.breedable) {
+  fail(
+    "Astralym (#204) should exist, stay out of the generic pool, and not be breedable",
+  );
+}
+expectChild(
+  "Astralym × Astralym",
+  astralym,
+  astralym,
+  "male",
+  "female",
+  null,
+);
+expectChild(
+  "Astralym × Lamball",
+  astralym,
+  pal("1.0"),
+  "male",
+  "female",
+  null,
+);
+if (getParentPairs(astralym).length > 0) {
+  fail("Astralym should have no reverse parent pairs");
+}
+if (getParentCombinations(astralym).length > 0) {
+  fail("Astralym should have no parent combinations");
 }
 
 const selfOnlyIds = [
@@ -236,6 +260,12 @@ for (const child of pals) {
   const sameSpecies = pairs.find(
     (pair) => pair.parent1.id === child.id && pair.parent2.id === child.id,
   );
+  if (!child.breedable) {
+    if (pairs.length > 0) {
+      fail(`${child.name}: unbreedable Pal should have no reverse parent pairs`);
+    }
+    continue;
+  }
   if (!sameSpecies) {
     fail(`${child.name}: missing same-species parent pair`);
   } else if (sameSpecies.parent1Gender || sameSpecies.parent2Gender) {
@@ -243,6 +273,11 @@ for (const child of pals) {
   }
 
   for (const pair of pairs) {
+    if (!pair.parent1.breedable || !pair.parent2.breedable) {
+      fail(
+        `${child.name}: reverse pair includes unbreedable Pal (${pair.parent1.name} × ${pair.parent2.name})`,
+      );
+    }
     if (pair.parent1Gender == null && pair.parent2Gender == null) {
       expectChild(
         `reverse ${child.name}`,
@@ -330,6 +365,13 @@ let combinationCount = 0;
 for (const parent of pals) {
   const combinations = getParentCombinations(parent);
   combinationCount += combinations.length;
+
+  if (!parent.breedable) {
+    if (combinations.length > 0) {
+      fail(`${parent.name}: unbreedable Pal should have no parent combinations`);
+    }
+    continue;
+  }
 
   const sameSpecies = combinations.find(
     (combo) =>

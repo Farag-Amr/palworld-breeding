@@ -163,7 +163,7 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
 
       {pickerFor ? (
         <PalPickerModal
-          pals={pals}
+          pals={pals.filter((pal) => pal.breedable)}
           selectedId={
             pickerFor === "desiredChild"
               ? (desiredChild?.id ?? null)

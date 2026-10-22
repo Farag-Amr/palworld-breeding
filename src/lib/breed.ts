@@ -72,6 +72,7 @@ export function getChild(
   gender2: PalGender,
 ): Pal | null {
   if (!areOppositeGenders(gender1, gender2)) return null;
+  if (!parent1.breedable || !parent2.breedable) return null;
 
   if (parent1.id === parent2.id) return parent1;
 
@@ -125,6 +126,7 @@ function buildBreedingIndexes() {
     for (let j = i; j < pals.length; j++) {
       const parent1 = pals[i];
       const parent2 = pals[j];
+      if (!parent1.breedable || !parent2.breedable) continue;
       const maleFemale = getChild(parent1, parent2, "male", "female");
       const femaleMale = getChild(parent1, parent2, "female", "male");
 

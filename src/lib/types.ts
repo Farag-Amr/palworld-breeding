@@ -11,6 +11,7 @@ export type Pal = {
   breedingPower: number;
   breedingPowerPriority: number;
   inGenericPool: boolean;
+  breedable: boolean;
 };
 
 export type UniqueCombo = {

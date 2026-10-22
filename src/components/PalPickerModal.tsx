@@ -19,7 +19,10 @@ export function PalPickerModal({
   onClose: () => void;
 }) {
   const [query, setQuery] = useState("");
-  const visiblePals = filterPalsByNamePrefix(pals, query);
+  const visiblePals = filterPalsByNamePrefix(
+    pals.filter((pal) => pal.breedable),
+    query,
+  );
 
   useEffect(() => {
     const previous = document.body.style.overflow;

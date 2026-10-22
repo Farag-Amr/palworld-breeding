@@ -51,9 +51,13 @@ export function PaldexList({
             <li key={pal.id} className="border-b border-zinc-800 last:border-b-0">
               <button
                 type="button"
+                disabled={!pal.breedable}
                 onClick={() => onPick(pal)}
                 className={[
-                  "flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-zinc-800/70",
+                  "flex w-full items-center gap-3 px-3 py-2 text-left",
+                  pal.breedable
+                    ? "hover:bg-zinc-800/70"
+                    : "cursor-not-allowed opacity-60",
                   selected ? "bg-sky-950/40" : "",
                 ].join(" ")}
               >
@@ -62,7 +66,11 @@ export function PaldexList({
                   {paldexLabel(pal)}
                 </span>
                 <span className="text-sm text-zinc-100">{pal.name}</span>
-                {badge ? (
+                {!pal.breedable ? (
+                  <span className="ml-auto text-xs text-zinc-500">
+                    This pal is not breedable.
+                  </span>
+                ) : badge ? (
                   <span className="ml-auto text-[10px] font-medium tracking-wide text-sky-300">
                     {badge}
                   </span>
