@@ -1,7 +1,7 @@
 {
-  "palCount": 299,
+  "palCount": 300,
   "uniqueComboCount": 136,
   "gameVersion": "1.0",
   "palcalcVersion": "v28",
-  "source": "PalCalc db.json (MIT) + unique combo table from palworldcalc.com/data/special.json"
+  "source": "PalCalc db.json (MIT) + unique combo table from palworldcalc.com/data/special.json + Astralym (#204) from Palworld 1.0 Paldex"
 }

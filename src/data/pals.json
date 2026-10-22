@@ -3168,6 +3168,17 @@
     "inGenericPool": true
   },
   {
+    "id": "204.0",
+    "name": "Astralym",
+    "paldexNo": 204,
+    "isVariant": false,
+    "internalName": "WorldTreeDragon",
+    "internalIndex": 309,
+    "breedingPower": 10,
+    "breedingPowerPriority": 1000,
+    "inGenericPool": false
+  },
+  {
     "id": "10000.0",
     "name": "Eye of Cthulhu",
     "paldexNo": 10000,

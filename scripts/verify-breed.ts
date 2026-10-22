@@ -76,6 +76,15 @@ if (uniqueCombos.length !== 136) {
   fail(`Expected 136 unique combos, found ${uniqueCombos.length}`);
 }
 
+if (pals.length !== 300) {
+  fail(`Expected 300 pals, found ${pals.length}`);
+}
+
+const astralym = pal("204.0");
+if (astralym.name !== "Astralym" || astralym.inGenericPool) {
+  fail("Astralym (#204) should exist and stay out of the generic breeding pool");
+}
+
 let uniqueHits = 0;
 let uniqueBeatsGeneric = 0;
 

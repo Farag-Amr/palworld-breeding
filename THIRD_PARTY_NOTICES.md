@@ -4,7 +4,7 @@ Pal names, breeding numbers, and unique recipes are game facts from Palworld (Po
 
 ## PalCalc (`db.json`)
 
-Pal list, breeding power, and related fields are taken from [PalCalc](https://github.com/tylercamp/palcalc) by Tyler Camp, MIT License:
+Pal list, breeding power, and related fields are taken from [PalCalc](https://github.com/tylercamp/palcalc) by Tyler Camp, MIT License. Astralym (#204) is missing from that dump and is added from Palworld 1.0 Paldex data (internal name `WorldTreeDragon`, breeding rank 10); it is kept out of the generic breeding pool.
 
 Copyright 2024, Tyler Camp
 

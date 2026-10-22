@@ -22,7 +22,24 @@ const pals = db.Pals.map((pal) => ({
   internalIndex: pal.InternalIndex,
   breedingPower: pal.BreedingPower,
   breedingPowerPriority: pal.BreedingPowerPriority ?? 0,
-})).sort((a, b) => a.paldexNo - b.paldexNo || Number(a.isVariant) - Number(b.isVariant));
+}));
+
+// PalCalc v28 omits Paldex #204. Game files still have breeding rank 10;
+// it is excluded from the generic child pool (unobtainable / no combo breeding).
+pals.push({
+  id: "204.0",
+  name: "Astralym",
+  paldexNo: 204,
+  isVariant: false,
+  internalName: "WorldTreeDragon",
+  internalIndex: 309,
+  breedingPower: 10,
+  breedingPowerPriority: 1000,
+});
+
+pals.sort(
+  (a, b) => a.paldexNo - b.paldexNo || Number(a.isVariant) - Number(b.isVariant),
+);
 
 const palsByName = new Map();
 for (const pal of pals) {
@@ -70,8 +87,10 @@ if (missing.length > 0) {
 }
 
 const uniqueChildIds = new Set(uniqueCombos.map((combo) => combo.childId));
+const extraGenericExclusions = new Set(["204.0"]);
 for (const pal of pals) {
-  pal.inGenericPool = !uniqueChildIds.has(pal.id);
+  pal.inGenericPool =
+    !uniqueChildIds.has(pal.id) && !extraGenericExclusions.has(pal.id);
 }
 
 const meta = {
@@ -79,7 +98,8 @@ const meta = {
   uniqueComboCount: uniqueCombos.length,
   gameVersion: "1.0",
   palcalcVersion: db.Version,
-  source: "PalCalc db.json (MIT) + unique combo table from palworldcalc.com/data/special.json",
+  source:
+    "PalCalc db.json (MIT) + unique combo table from palworldcalc.com/data/special.json + Astralym (#204) from Palworld 1.0 Paldex",
 };
 
 fs.mkdirSync(outDir, { recursive: true });
