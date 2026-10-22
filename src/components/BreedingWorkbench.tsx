@@ -1,5 +1,6 @@
 "use client";
 
+import { PalPickerModal } from "@/components/PalPickerModal";
 import { PalSlot } from "@/components/PalSlot";
 import { PaldexList } from "@/components/PaldexList";
 import { areOppositeGenders, getChild } from "@/lib/breed";
@@ -12,6 +13,8 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
   const [gender1, setGender1] = useState<PalGender>("male");
   const [gender2, setGender2] = useState<PalGender>("female");
   const [activeSlot, setActiveSlot] = useState<1 | 2>(1);
+  const [desiredChild, setDesiredChild] = useState<Pal | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const oppositeGenders = areOppositeGenders(gender1, gender2);
   const child =
@@ -102,14 +105,28 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
         <div className="grid grid-cols-2 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_minmax(0,1fr)]">
           <PalSlot
             label="Desired child"
-            pal={null}
+            pal={desiredChild}
             emptyHint=""
             interactive
+            active={pickerOpen}
             showPlusWhenEmpty
-            onSelect={() => {}}
+            onSelect={() => setPickerOpen(true)}
+            onClear={() => setDesiredChild(null)}
           />
         </div>
       </section>
+
+      {pickerOpen ? (
+        <PalPickerModal
+          pals={pals}
+          selectedId={desiredChild?.id ?? null}
+          onPick={(pal) => {
+            setDesiredChild(pal);
+            setPickerOpen(false);
+          }}
+          onClose={() => setPickerOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }
