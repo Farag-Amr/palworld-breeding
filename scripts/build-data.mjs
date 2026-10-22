@@ -87,10 +87,40 @@ if (missing.length > 0) {
 }
 
 const uniqueChildIds = new Set(uniqueCombos.map((combo) => combo.childId));
-const extraGenericExclusions = new Set(["204.0"]);
+// Same-species-only children: they keep a breeding rank but cannot win
+// the generic "nearest Pal" search. Unique-recipe children are already out.
+const selfOnlyChildIds = new Set([
+  "12.1", // Gumoss (Flower)
+  "137.1", // Blazamut Ryu
+  "144.0", // Mimog
+  "145.0", // Xenovader
+  "146.0", // Xenogard
+  "185.0", // Grizzbolt
+  "186.0", // Lyleen
+  "187.0", // Orserk
+  "188.0", // Faleris
+  "189.0", // Shadowbeak
+  "190.0", // Selyne
+  "191.0", // Bastigor
+  "192.0", // Shaolong
+  "193.0", // Silvance
+  "194.0", // Dandilord
+  "195.1", // Bellanoir Libero
+  "196.0", // Xenolord
+  "197.0", // Hartalis
+  "198.0", // Paladius
+  "199.0", // Necromus
+  "200.0", // Frostallion
+  "201.0", // Neptilius
+  "202.0", // Jetragon
+  "203.0", // Panthalus
+  "204.0", // Astralym
+  "10002.0", // Green Slime
+  "10009.0", // Cave Bat
+]);
 for (const pal of pals) {
   pal.inGenericPool =
-    !uniqueChildIds.has(pal.id) && !extraGenericExclusions.has(pal.id);
+    !uniqueChildIds.has(pal.id) && !selfOnlyChildIds.has(pal.id);
 }
 
 const meta = {

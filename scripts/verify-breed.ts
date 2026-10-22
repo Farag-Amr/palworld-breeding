@@ -86,6 +86,61 @@ if (astralym.name !== "Astralym" || astralym.inGenericPool) {
   fail("Astralym (#204) should exist and stay out of the generic breeding pool");
 }
 
+const selfOnlyIds = [
+  "12.1",
+  "137.1",
+  "144.0",
+  "145.0",
+  "146.0",
+  "185.0",
+  "186.0",
+  "187.0",
+  "188.0",
+  "189.0",
+  "190.0",
+  "191.0",
+  "192.0",
+  "193.0",
+  "194.0",
+  "195.1",
+  "196.0",
+  "197.0",
+  "198.0",
+  "199.0",
+  "200.0",
+  "201.0",
+  "202.0",
+  "203.0",
+  "204.0",
+  "10002.0",
+  "10009.0",
+];
+for (const id of selfOnlyIds) {
+  if (pal(id).inGenericPool) {
+    fail(`${pal(id).name} (${id}) can only breed with itself and must stay out of the generic pool`);
+  }
+}
+if (!pal("12.0").inGenericPool) {
+  fail("Base Gumoss should stay in the generic pool");
+}
+
+expectChild(
+  "Frostallion × Jetragon",
+  pal("200.0"),
+  pal("202.0"),
+  "male",
+  "female",
+  "184.0",
+);
+expectChild(
+  "same-species Frostallion",
+  pal("200.0"),
+  pal("200.0"),
+  "male",
+  "female",
+  "200.0",
+);
+
 let uniqueHits = 0;
 let uniqueBeatsGeneric = 0;
 
