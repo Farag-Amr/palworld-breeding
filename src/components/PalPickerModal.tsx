@@ -1,9 +1,11 @@
 "use client";
 
 import { PalIcon } from "@/components/PalIcon";
+import { PalSearch } from "@/components/PalSearch";
 import { paldexLabel } from "@/lib/format";
+import { filterPalsByNamePrefix } from "@/lib/pal-search";
 import type { Pal } from "@/lib/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function PalPickerModal({
   pals,
@@ -16,6 +18,9 @@ export function PalPickerModal({
   onPick: (pal: Pal) => void;
   onClose: () => void;
 }) {
+  const [query, setQuery] = useState("");
+  const visiblePals = filterPalsByNamePrefix(pals, query);
+
   useEffect(() => {
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -57,9 +62,15 @@ export function PalPickerModal({
             Close
           </button>
         </div>
+        <div className="border-b border-zinc-800 px-4 py-3">
+          <PalSearch value={query} onChange={setQuery} />
+        </div>
         <div className="overflow-y-auto p-4">
+          {visiblePals.length === 0 ? (
+            <p className="text-sm text-zinc-500">No pals match.</p>
+          ) : null}
           <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
-            {pals.map((pal) => {
+            {visiblePals.map((pal) => {
               const selected = pal.id === selectedId;
               return (
                 <li key={pal.id}>

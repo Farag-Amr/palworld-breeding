@@ -1,8 +1,11 @@
 "use client";
 
 import { PalIcon } from "@/components/PalIcon";
+import { PalSearch } from "@/components/PalSearch";
 import { paldexLabel } from "@/lib/format";
+import { filterPalsByNamePrefix } from "@/lib/pal-search";
 import type { Pal } from "@/lib/types";
+import { useState } from "react";
 
 export function PaldexList({
   pals,
@@ -15,6 +18,9 @@ export function PaldexList({
   parent2Id: string | null;
   onPick: (pal: Pal) => void;
 }) {
+  const [query, setQuery] = useState("");
+  const visiblePals = filterPalsByNamePrefix(pals, query);
+
   return (
     <section className="flex flex-col gap-3">
       <div>
@@ -23,8 +29,12 @@ export function PaldexList({
           Paldex order. Click a Pal to set the highlighted parent.
         </p>
       </div>
+      <PalSearch value={query} onChange={setQuery} />
       <ul className="max-h-[28rem] overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-900/60">
-        {pals.map((pal) => {
+        {visiblePals.length === 0 ? (
+          <li className="px-3 py-4 text-sm text-zinc-500">No pals match.</li>
+        ) : null}
+        {visiblePals.map((pal) => {
           const isParent1 = pal.id === parent1Id;
           const isParent2 = pal.id === parent2Id;
           const selected = isParent1 || isParent2;
