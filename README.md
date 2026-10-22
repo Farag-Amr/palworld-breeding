@@ -54,7 +54,7 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for PalCalc (MIT), combo-ta
 - [x] Two-parent calculator
 - [x] Parent reverse lookup
 - [x] Numbered Paldex list with pal portraits
-- [ ] Paldex expandable parent combinations
+- [x] Paldex expandable parent combinations (Parent finder / Desired child)
 - [ ] Later: breeding matrix and shortest path
 
 ## License
