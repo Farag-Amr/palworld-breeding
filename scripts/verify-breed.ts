@@ -1,10 +1,11 @@
 import {
   areOppositeGenders,
   getChild,
+  getParentPairs,
   oppositeGender,
 } from "../src/lib/breed";
 import { pals, palsById, uniqueCombos } from "../src/lib/pals";
-import type { Pal, PalGender, UniqueCombo } from "../src/lib/types";
+import type { Pal, PalGender, ParentPair, UniqueCombo } from "../src/lib/types";
 
 const failures: string[] = [];
 
@@ -138,6 +139,128 @@ if (!areOppositeGenders("male", "female") || areOppositeGenders("male", "male"))
   fail("areOppositeGenders is wrong");
 }
 
+function pairHasParents(pair: ParentPair, parent1: Pal, parent2: Pal) {
+  return (
+    (pair.parent1.id === parent1.id && pair.parent2.id === parent2.id) ||
+    (pair.parent1.id === parent2.id && pair.parent2.id === parent1.id)
+  );
+}
+
+function pairHasGenders(
+  pair: ParentPair,
+  parent1: Pal,
+  parent2: Pal,
+  gender1: PalGender,
+  gender2: PalGender,
+) {
+  if (pair.parent1.id === parent1.id && pair.parent2.id === parent2.id) {
+    return pair.parent1Gender === gender1 && pair.parent2Gender === gender2;
+  }
+  if (pair.parent1.id === parent2.id && pair.parent2.id === parent1.id) {
+    return pair.parent1Gender === gender2 && pair.parent2Gender === gender1;
+  }
+  return false;
+}
+
+let reversePairCount = 0;
+
+for (const child of pals) {
+  const pairs = getParentPairs(child);
+  reversePairCount += pairs.length;
+
+  const sameSpecies = pairs.find(
+    (pair) => pair.parent1.id === child.id && pair.parent2.id === child.id,
+  );
+  if (!sameSpecies) {
+    fail(`${child.name}: missing same-species parent pair`);
+  } else if (sameSpecies.parent1Gender || sameSpecies.parent2Gender) {
+    fail(`${child.name}: same-species pair should not lock gender`);
+  }
+
+  for (const pair of pairs) {
+    if (pair.parent1Gender == null && pair.parent2Gender == null) {
+      expectChild(
+        `reverse ${child.name}`,
+        pair.parent1,
+        pair.parent2,
+        "male",
+        "female",
+        child.id,
+      );
+      expectChild(
+        `reverse swapped genders ${child.name}`,
+        pair.parent1,
+        pair.parent2,
+        "female",
+        "male",
+        child.id,
+      );
+    } else if (pair.parent1Gender && pair.parent2Gender) {
+      expectChild(
+        `reverse gender-locked ${child.name}`,
+        pair.parent1,
+        pair.parent2,
+        pair.parent1Gender,
+        pair.parent2Gender,
+        child.id,
+      );
+    } else {
+      fail(
+        `${child.name}: pair ${pair.parent1.name} × ${pair.parent2.name} has incomplete genders`,
+      );
+    }
+  }
+}
+
+for (const combo of uniqueCombos) {
+  const parent1 = pal(combo.parent1Id);
+  const parent2 = pal(combo.parent2Id);
+  const child = pal(combo.childId);
+  const pairs = getParentPairs(child);
+  if (!pairs.some((pair) => pairHasParents(pair, parent1, parent2))) {
+    fail(
+      `${child.name}: unique recipe ${parent1.name} × ${parent2.name} missing from reverse lookup`,
+    );
+  }
+}
+
+const daedreamPairs = getParentPairs(pal("22.0"));
+if (!daedreamPairs.some((pair) => pairHasParents(pair, pal("1.0"), pal("2.0")))) {
+  fail("Daedream: Lamball × Cattiva missing from reverse lookup");
+}
+
+const fuackIgnisPairs = getParentPairs(pal("5.1"));
+if (
+  !fuackIgnisPairs.some((pair) => pairHasParents(pair, pal("5.0"), pal("25.0")))
+) {
+  fail("Fuack Ignis: Fuack × Flambelle missing from reverse lookup");
+}
+
+const wixenNoctPairs = getParentPairs(pal("78.1"));
+if (
+  !wixenNoctPairs.some((pair) =>
+    pairHasGenders(pair, pal("78.0"), pal("79.0"), "female", "male"),
+  )
+) {
+  fail("Wixen Noct: missing Wixen female × Katress male");
+}
+if (
+  wixenNoctPairs.some((pair) =>
+    pairHasGenders(pair, pal("78.0"), pal("79.0"), "male", "female"),
+  )
+) {
+  fail("Wixen Noct: should not list Wixen male × Katress female");
+}
+
+const katressIgnisPairs = getParentPairs(pal("79.1"));
+if (
+  !katressIgnisPairs.some((pair) =>
+    pairHasGenders(pair, pal("79.0"), pal("78.0"), "female", "male"),
+  )
+) {
+  fail("Katress Ignis: missing Katress female × Wixen male");
+}
+
 if (failures.length > 0) {
   console.error(`Failed ${failures.length} check(s):`);
   for (const failure of failures.slice(0, 40)) console.error(`- ${failure}`);
@@ -145,5 +268,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Passed: ${uniqueHits} unique recipes (forward + swapped), ${uniqueBeatsGeneric} of those differ from the breeding-power average, plus same-species, generic, gender-lock, and same-gender checks.`,
+  `Passed: ${uniqueHits} unique recipes (forward + swapped), ${uniqueBeatsGeneric} of those differ from the breeding-power average, ${reversePairCount} reverse parent pairs, plus same-species, generic, gender-lock, and same-gender checks.`,
 );

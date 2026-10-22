@@ -52,7 +52,7 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for PalCalc (MIT), combo-ta
 - [x] Pal JSON data and unique-combo table
 - [x] Breeding engine (`getChild`)
 - [x] Two-parent calculator
-- [ ] Parent reverse lookup
+- [x] Parent reverse lookup
 - [x] Numbered Paldex list with pal portraits
 - [ ] Paldex expandable parent combinations
 - [ ] Later: breeding matrix and shortest path

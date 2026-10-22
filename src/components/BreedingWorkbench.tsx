@@ -3,9 +3,10 @@
 import { PalPickerModal } from "@/components/PalPickerModal";
 import { PalSlot } from "@/components/PalSlot";
 import { PaldexList } from "@/components/PaldexList";
-import { areOppositeGenders, getChild } from "@/lib/breed";
+import { ParentPairList } from "@/components/ParentPairList";
+import { areOppositeGenders, getChild, getParentPairs } from "@/lib/breed";
 import type { Pal, PalGender } from "@/lib/types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
   const [parent1, setParent1] = useState<Pal | null>(null);
@@ -21,6 +22,10 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
     parent1 && parent2 && oppositeGenders
       ? getChild(parent1, parent2, gender1, gender2)
       : null;
+  const parentPairs = useMemo(
+    () => (desiredChild ? getParentPairs(desiredChild) : []),
+    [desiredChild],
+  );
 
   function pickPal(pal: Pal) {
     if (activeSlot === 1) {
@@ -114,6 +119,7 @@ export function BreedingWorkbench({ pals }: { pals: Pal[] }) {
             onClear={() => setDesiredChild(null)}
           />
         </div>
+        {desiredChild ? <ParentPairList pairs={parentPairs} /> : null}
       </section>
 
       {pickerOpen ? (

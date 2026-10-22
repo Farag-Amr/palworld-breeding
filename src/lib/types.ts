@@ -21,6 +21,13 @@ export type UniqueCombo = {
   parent2Gender: PalGender | null;
 };
 
+export type ParentPair = {
+  parent1: Pal;
+  parent2: Pal;
+  parent1Gender: PalGender | null;
+  parent2Gender: PalGender | null;
+};
+
 export type DataMeta = {
   palCount: number;
   uniqueComboCount: number;

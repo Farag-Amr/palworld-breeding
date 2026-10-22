@@ -1,5 +1,7 @@
 import { pals, palsById, uniqueCombos } from "@/lib/pals";
-import type { Pal, PalGender, UniqueCombo } from "@/lib/types";
+import type { Pal, PalGender, ParentPair, UniqueCombo } from "@/lib/types";
+
+const genericPool = pals.filter((pal) => pal.inGenericPool);
 
 export function oppositeGender(gender: PalGender): PalGender {
   return gender === "male" ? "female" : "male";
@@ -50,9 +52,8 @@ function genericChild(parent1: Pal, parent2: Pal) {
   const targetPower = Math.floor(
     (parent1.breedingPower + parent2.breedingPower + 1) / 2,
   );
-  const pool = pals.filter((pal) => pal.inGenericPool);
-  let best = pool[0];
-  for (const pal of pool) {
+  let best = genericPool[0];
+  for (const pal of genericPool) {
     if (closerGeneric(pal, best, targetPower)) best = pal;
   }
   return best;
@@ -78,4 +79,66 @@ export function getChild(
   }
 
   return genericChild(parent1, parent2);
+}
+
+let parentPairsByChildId: Map<string, ParentPair[]> | null = null;
+
+function addPair(
+  pairsByChildId: Map<string, ParentPair[]>,
+  childId: string,
+  pair: ParentPair,
+) {
+  const pairs = pairsByChildId.get(childId);
+  if (pairs) pairs.push(pair);
+  else pairsByChildId.set(childId, [pair]);
+}
+
+function buildParentPairsByChildId() {
+  const pairsByChildId = new Map<string, ParentPair[]>();
+
+  for (let i = 0; i < pals.length; i++) {
+    for (let j = i; j < pals.length; j++) {
+      const parent1 = pals[i];
+      const parent2 = pals[j];
+      const maleFemale = getChild(parent1, parent2, "male", "female");
+      const femaleMale = getChild(parent1, parent2, "female", "male");
+
+      if (maleFemale && femaleMale && maleFemale.id === femaleMale.id) {
+        addPair(pairsByChildId, maleFemale.id, {
+          parent1,
+          parent2,
+          parent1Gender: null,
+          parent2Gender: null,
+        });
+        continue;
+      }
+
+      if (maleFemale) {
+        addPair(pairsByChildId, maleFemale.id, {
+          parent1,
+          parent2,
+          parent1Gender: "male",
+          parent2Gender: "female",
+        });
+      }
+
+      if (femaleMale) {
+        addPair(pairsByChildId, femaleMale.id, {
+          parent1,
+          parent2,
+          parent1Gender: "female",
+          parent2Gender: "male",
+        });
+      }
+    }
+  }
+
+  return pairsByChildId;
+}
+
+export function getParentPairs(child: Pal): ParentPair[] {
+  if (!parentPairsByChildId) {
+    parentPairsByChildId = buildParentPairsByChildId();
+  }
+  return parentPairsByChildId.get(child.id) ?? [];
 }
